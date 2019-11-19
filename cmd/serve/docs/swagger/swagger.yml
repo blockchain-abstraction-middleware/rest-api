@@ -1,0 +1,52 @@
+openapi: 3.0.1
+info:
+  title: Project Template
+  description: This is a sample project template to be used to scaffold blockchain services
+  contact:
+    email: support@bam.io
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+tags:
+- name: project-template
+  description: Sample scaffolding project
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+paths:
+  /api/v1/health/status:
+    get:
+      tags:
+      - project-template
+      summary: Check the health of the service
+      operationId: healthCheck
+      responses:
+        200:
+          description: healthy response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Health'
+        404:
+          description: Not found
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+      security:
+      - auth:
+        - bam:access
+components:
+  schemas:
+    Health:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Healthy response from service at - 2019-10-28 01:15:49.392631014 +0000 GMT m=+72.576498242
+        statusCode:
+          type: number
+          example: 200
