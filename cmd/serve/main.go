@@ -19,7 +19,7 @@ func main() {
 	swaggerResource := routes.SwaggerResource{}
 
 	srv.RegisterResource(healthResource.NewResource("/health"))
-	srv.RegisterResource(swaggerResource.NewResource("/swagger"))
+	srv.RegisterResource(swaggerResource.NewResource("/swagger", "/api/v1/swagger"))
 
 	if err := srv.Run(); err != nil {
 		log.WithError(err).Fatal("Serving failed")

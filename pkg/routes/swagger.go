@@ -8,13 +8,15 @@ import (
 
 // SwaggerResource implements server.Resource interface
 type SwaggerResource struct {
-	path string
+	path   string
+	prefix string
 }
 
 // SwaggerResource constructor func
-func (r *SwaggerResource) NewResource(path string) *SwaggerResource {
+func (r *SwaggerResource) NewResource(path string, prefix string) *SwaggerResource {
 	return &SwaggerResource{
-		path: path,
+		path:   path,
+		prefix: prefix,
 	}
 }
 
@@ -27,15 +29,13 @@ func (r *SwaggerResource) Path() string {
 func (r *SwaggerResource) Routes() http.Handler {
 	router := chi.NewRouter()
 
-	router.Handle("/docs/*", r.serverSwagger())
+	router.Handle("/docs/*", r.serverSwagger(r.prefix))
 
 	return router
 }
 
-func (r *SwaggerResource) serverSwagger() http.HandlerFunc {
+func (r *SwaggerResource) serverSwagger(prefix string) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
-		prefix := "/api/v1/swagger"
-
 		hfs := http.FileServer(http.Dir("docs"))
 		fs := http.StripPrefix(prefix+"/docs/", hfs)
 		fs.ServeHTTP(res, req)
